@@ -1,0 +1,6 @@
+*.out
+*.csv
+
+.idea
+CMakeLists.txt
+cmake-build-debug
