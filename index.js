@@ -15,16 +15,21 @@ const files = [
     "out-10000.csv",
     "out-100000.csv",
 ]
-const size = 10;
 files.forEach(file => {
     fs.readFile(file, 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return;
         }
+
+        // print the file name
         console.log(file);
+        const lines = data.split('\n'); // get line count
+        const repetitionCount = lines.length / 5; // get repetition amount
+        // repetition count: trial count of process with same arguments
         const averages = {};
-        data.split("\n").forEach((line) => {
+
+        lines.forEach((line) => {
             if (line !== '') {
                 const [thread, _, timeSpent] = line.split(",");
                 if (averages[thread]) {
@@ -34,10 +39,11 @@ files.forEach(file => {
                 }
             }
         });
+        // print the averages
         Object.keys(averages).forEach(key => {
-            averages[key] /= size;
+            averages[key] /= repetitionCount; // calculate average
             // print the average result in format that excel excepts directly
-            // the floating point is comma [ wrong: 1.15 correct: 1,15 ]
+            // the floating point uses comma [ wrong: 1.15 correct: 1,15 ]
             console.log(averages[key].toFixed(7).replace(".", ","));
         })
     });
